@@ -15,6 +15,9 @@ O React é uma biblioteca JavaScript criada pelo Facebook para construir interfa
 4. **JavaScript ES6+:**  
    Versão moderna do JavaScript com recursos avançados, como **arrow functions, destructuring, classes, módulos, template literals e promises**. Essas melhorias tornam o código mais conciso, legível e eficiente.
 
+5. **Biblioteca Multer:**
+   A biblioteca multer é um middleware para Node.js usado com o framework Express, que facilita o upload de arquivos, especialmente imagens. Ela lida com dados do tipo multipart/form-data, que é o formato usado pelos formulários HTML ao enviar arquivos.
+
 ## PROJETO DESENVOLVIDOS DURANTE O CURSO
 
 ## # Moments
