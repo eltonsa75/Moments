@@ -2,8 +2,8 @@ const Memory = require("../models/Memory")
 
 const fs = require("fs")
 
-const removeOldImage = (memroy) => {
-    fs.unlink(memory.src, (err) => {
+const removeOldImage = (memory) => {
+    fs.unlink(`/public/${memory.src}`, (err) => {
         if( err) {
             console.log(err);
         } else {
@@ -73,10 +73,66 @@ const createMemory = async (req, res) => {
                 return res.status(404).json({ msg: "Memória não encontrada!" })
             }
 
-            removeOldImage()
+            removeOldImage(memory)
 
             res.json({msg: "Memória excluida"})            
         } catch (error) {
+            res.status(500).send("Ocorreu um erro!")
+        }
+    }
+
+    const updateMemory = async (req, res) => {
+        try {
+
+            const {title, description} = req.body
+
+            let src = null
+
+            if(req.file) [
+                src = `images/${req.file.filename}`
+            ]
+
+            const memory = await Memory.findById(req.params.id)
+
+            if(!memory) {
+                return res.status(404).json({ msg: "Memória não encontrada!"})
+            }
+
+            if(src) {
+                removeOldImage(memory)
+            }
+
+            const updateData = {}
+
+            if(title) updateData.title = title
+            if(description) updateData.description = description
+            if(src) updateData.src = src
+
+            const updateMemory = await Memory.findByIdAndUpdate(
+                req.params.id,
+                updateData,
+                { new: true }
+            );
+            res.json({ updateMemory, msg: "Memória atualizada com sucesso!" })
+        } catch (error) {}
+    }
+
+    const toggleFavorite = async(req, res) => {
+        try {
+            const memory = await Memory.findById(req.params.id)
+
+            if(!memory) {
+                return res.status(404).json({ msg: "Memória não encontrada!" })
+            }
+
+            memory.favorite = !memory.favorite
+
+            await memory.save()
+
+      
+            res.json({ msg: "Adicionada aos favoritos", memory})            
+        } catch (error) {
+            console.log(error)
             res.status(500).send("Ocorreu um erro!")
         }
     }
@@ -85,5 +141,7 @@ module.exports = {
     createMemory,
     getMemories,
     getMemory,
-    deleteMemory
+    deleteMemory,
+    updateMemory,
+    toggleFavorite
 }
