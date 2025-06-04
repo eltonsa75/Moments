@@ -15,5 +15,5 @@ const memoryRoutes = require("./routes");
 app.use("/memories", memoryRoutes);
 
 app.listen(port, async () => {
-    console.log(`O servidor iniciou na porta: ${port}`)
-})
+  console.log(`Server started on port ${port}`);
+});
